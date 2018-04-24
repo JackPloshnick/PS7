@@ -46,14 +46,33 @@ hood <-  mutate(hood, perDay = (count/31))
 
 #Neighborhood 35 has 305 crimes total. Which is 9.83 crimes per day
 
+## Question 4
 
+#Compute the proportion of crime related to robbery by district. Which
+#district has the largest proportion of crime related to robbery?
 
+RobberyData<- March2018 %>% 
+  separate(Description, into = c("Type", "Specifics"), sep = ("-")) %>%
+  separate(Type, into = c("Type","S"), sep = (" ")) %>%
+  group_by(Type, District) %>%
+  filter(Type == "ROBBERY") %>%
+  summarise(count=n()) %>%
+  arrange(desc(count)) 
 
+RobberyData
 
+District <- March2018 %>% 
+  group_by( District) %>% 
+  summarise(total=n()) %>%
+  arrange(desc(total))
 
+District 
 
+RobberyData<- left_join(RobberyData,  District) 
+ 
+RobberyData<- mutate(RobberyData, prop= (RobberyData$count / RobberyData$total)) %>%
+  arrange(desc(prop))
 
-
-
+#district 5 has the highest robbery percent, 0.03986711
 
 
