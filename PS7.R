@@ -75,4 +75,40 @@ RobberyData<- mutate(RobberyData, prop= (RobberyData$count / RobberyData$total))
 
 #district 5 has the highest robbery percent, 0.03986711
 
+#Question 5
+#Visualize changes of all types of crime over time using ggplot2. Write
+#appropriate labels and titles. 
+
+
+Plottingdata<-  March2018 %>% 
+
+  group_by( Date, District) %>%
+  summarise(count=n()) %>%
+  arrange(desc(count))%>%
+  separate(Date, into = c("Month" , "Day", "Year"), sep = ("/"), convert = T) 
+
+
+Plottingdata
+
+
+ggplot(data = Plottingdata, mapping = aes(x = Day, y = count)) + 
+  geom_point() +
+  
+  labs(title = "Crimes by time")+
+  ylab("Number of Crimes")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+## Question 6
+
+
+
+ggplot(data = Plottingdata, mapping = aes(x = Day, y = count)) + 
+  geom_point(aes(color = factor( District))) +
+
+  labs(title = "Crimes by time and district", color = "District")+
+  ylab("Number of Crimes")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+
+
 
