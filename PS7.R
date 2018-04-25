@@ -16,14 +16,12 @@ March2018<- March2018 %>%
 crimes <- March2018 %>% 
   group_by(Description) %>% 
   summarise(count=n()) %>%
-  arrange(desc(count))
+  arrange(desc(count))%>%
+  mutate(perDay = (count/31))
 
 crimes 
 
 #Most common crime= "LEAVING SCENE OF ACCIDENT"
-
-#number of crimes per day 
-crimes <-  mutate(crimes, perDay = (count/31))
 
 #14.96 "LEAVING SCENE OF ACCIDENT" per day 
 
@@ -38,11 +36,10 @@ crimes <-  mutate(crimes, perDay = (count/31))
 hood <- March2018 %>% 
   group_by( Neighborhood) %>% 
   summarise(count=n()) %>%
-  arrange(desc(count))
+  arrange(desc(count)) %>%
+  mutate( perDay = (count/31))
 
 hood 
-
-hood <-  mutate(hood, perDay = (count/31))
 
 #Neighborhood 35 has 305 crimes total. Which is 9.83 crimes per day
 
@@ -73,7 +70,9 @@ RobberyData<- left_join(RobberyData,  District)
 RobberyData<- mutate(RobberyData, prop= (RobberyData$count / RobberyData$total)) %>%
   arrange(desc(prop))
 
-#district 5 has the highest robbery percent, 0.03986711
+RobberyData
+
+#district 5 has the highest robbery proportion, 0.03986711
 
 #Question 5
 #Visualize changes of all types of crime over time using ggplot2. Write
