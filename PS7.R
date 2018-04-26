@@ -3,6 +3,7 @@ March2018 <- read_csv("~/GitHub/PS7/March2018.csv")
 
 library(dplyr)
 library(ggplot2)
+library(tidyr)
 
 March2018<- as.tbl(March2018)
 
@@ -10,7 +11,8 @@ March2018<- as.tbl(March2018)
 
 
 March2018<- March2018 %>% 
-  separate(DateOccur, into = c("Date", "Time"), sep = " ")
+  separate(DateOccur, into = c("Date", "Time"), sep = " ") 
+#allows us to get the day of the month
 
 
 crimes <- March2018 %>% 
@@ -37,7 +39,7 @@ hood <- March2018 %>%
   group_by( Neighborhood) %>% 
   summarise(count=n()) %>%
   arrange(desc(count)) %>%
-  mutate( perDay = (count/31))
+  mutate( perDay = (count/31)) #total number of crimes / number of days in march
 
 hood 
 
@@ -50,7 +52,7 @@ hood
 
 RobberyData<- March2018 %>% 
   separate(Description, into = c("Type", "Specifics"), sep = ("-")) %>%
-  separate(Type, into = c("Type","S"), sep = (" ")) %>%
+  separate(Type, into = c("Type","S"), sep = (" ")) %>% #gets all tyoes of crimes that are robberies 
   group_by(Type, District) %>%
   filter(Type == "ROBBERY") %>%
   summarise(count=n()) %>%
@@ -63,14 +65,14 @@ District <- March2018 %>%
   summarise(total=n()) %>%
   arrange(desc(total))
 
-District 
+District #total number of crimes per district 
 
 RobberyData<- left_join(RobberyData,  District) 
  
 RobberyData<- mutate(RobberyData, prop= (RobberyData$count / RobberyData$total)) %>%
   arrange(desc(prop))
 
-RobberyData
+RobberyData #number of robberies/ number of crimes 
 
 #district 5 has the highest robbery proportion, 0.03986711
 
